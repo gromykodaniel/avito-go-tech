@@ -1,0 +1,39 @@
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: avito-db
+    environment:
+      POSTGRES_USER: ${PG_USERNAME}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+      POSTGRES_DB: ${PG_DATABASE}
+    ports:
+      - ${PG_PORT}:${PG_PORT}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - avito-network
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: avito-api
+    environment:
+      PORT: ${API_PORT}
+      DB_HOST: ${PG_HOST}
+      DB_PORT: ${PG_PORT}
+      DB_USER: ${PG_USERNAME}
+      DB_PASSWORD: ${PG_PASSWORD}
+      DB_NAME: ${PG_DATABASE}
+    ports:
+      - ${API_PORT}:${API_PORT}
+    depends_on:
+      - ${PG_HOST}
+    networks:
+      - avito-network
+
+volumes:
+  postgres_data:
+
+networks:
+  avito-network:

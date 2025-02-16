@@ -1,0 +1,9 @@
+.idea
+.env-non-dev
+.env
+.env-render
+__pycache__
+# *.ipynb*
+.pytest_cache
+library.json
+.venv
